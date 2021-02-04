@@ -1,0 +1,34 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: black;
+    color: #FFF;
+}
+
+div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+h1{
+    font-size: 3.5rem;
+    font-family: 'Roboto Mono', monospace;
+    margin: 0;
+}
+
+h2{
+    margin: 0;
+    font-family: 'Roboto Mono', monospace;
+
+}
+
+#screen {
+    margin: 2rem;
+    border: 5px solid #FFF;
+    /* image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges; */
+}
