@@ -96,14 +96,17 @@ export default function createGame(){
                 state.ball.x >= state.players[player].x && state.ball.x <= state.players[player].x + 10 
                 && state.ball.y >= state.players[player].y && state.players[player].number == 2
                 && state.ball.y <= state.players[player].y + state.players[player].heigth
-                ){
+                ){''
                     state.ball.orientationX = -1
                 }
             })
 
-            //move a bola no eixo X e Y
-            state.ball.x += 5 * state.ball.orientationX;
-            state.ball.y += 5 * state.ball.orientationY;
+            if(Object.keys(state.players).length > 1){
+                //move a bola no eixo X e Y
+                state.ball.x += 5 * state.ball.orientationX;
+                state.ball.y += 5 * state.ball.orientationY;
+            }
+           
 
             if(state.ball.x + 10 > state.screen.width){
                 initBall();
