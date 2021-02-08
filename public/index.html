@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/style.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="./styles/style.css">
+    <title>First Multiplayer Game</title>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
     <div>
@@ -18,6 +19,59 @@
         <h2>Player 2</h2>
         <h1 id='player2_points'>0</h1>
     </div>
-    <script src="./pong.js"></script>
+    <script type='module'>
+        import createGame from './game.js'
+        import keysListner from './keysListener.js'
+        import renderAnimation from './render.js'
+
+        const socket = io({transports: ['websocket'], upgrade: false})
+
+        const game = createGame()
+        const keyListener = keysListner(document)
+        const screen = document.getElementById('screen')
+
+        socket.on('connect', () => {
+            console.log(`> Connected ${socket.id}`)
+
+            game.createPlayer(socket.id)
+            keyListener.registerPlayer(socket.id)
+
+            renderAnimation(screen, game, requestAnimationFrame, socket.id)
+        })
+
+        socket.on('setup', (state) => {
+            const playerId = socket.id
+            game.setState(state)
+
+            keyListener.registerPlayer(playerId)
+            keyListener.subscribe(game.movePlayer)
+            keyListener.subscribe((command) => {
+                socket.emit('move-player', command)
+            })
+        })
+
+        socket.on('add-player', (command)=>{
+            console.log(`Receiving ${command.type} -> ${command.playerId}`)
+            game.createPlayer(command.playerId)
+        })
+
+        socket.on('move-player', (command) => {
+            console.log(`Receiving ${command.type} -> ${command.playerId}`)
+            const playerId = socket.id
+            if (playerId !== command.playerId) {
+                game.movePlayer(command)
+            }
+        })
+
+        socket.on('move-ball', (command) => {
+            game.setBallMoviment(command, socket.id)
+        })
+
+        socket.on('points-player', (command) => {
+            console.log('teste')
+            game.setPoints(command, socket.id)
+        })
+
+    </script>
 </body>
 </html>
