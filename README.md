@@ -1,10 +1,10 @@
 # multiplayer-game
 Meu primeiro jogo multiplayer!<br>
 
-Pong:
+Pong, demo:
 ![multiplayer-game](https://github.com/tiagomol1/multiplayer-game/blob/master/example.gif)
 
-Technologies:
+## Technologies:
   - Node.js
   - Socket.io (websockets)
   
